@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'firebase/storage'
 import fire from '../config/fire-config';
 
 const LoadCategories = () => {
   const [META, setMeta] = useState([]);
+  const [categoryVal, setValue] = useState("");
 
-  fire.firestore()
-    .collection('Category')
-    .onSnapshot(snap => {
-      const blogs = snap.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setMeta(blogs);
-    });
-    const [categoryVal, setValue] = useState("");
+  useEffect(() => {
+    fire.firestore()
+      .collection('Category')
+      .onSnapshot(snap => {
+        const blogs = snap.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setMeta(blogs);
+      });
+  }, [])
 
 
   return (
